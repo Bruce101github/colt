@@ -60,3 +60,21 @@ class TaskManager:
             for key, value in task.items():
                 print(f"{key}: {value}")
             print("-" * 20)
+
+    def modify_task(self, task_id: str, key: str, new_value: any):
+        """
+        Modifies a specified task's attribute.
+        
+        Args:
+            task_id (str): The identifier of the task to be modified.
+            key (str): The key of the task attribute to modify.
+            new_value (any): The new value for the specified key.
+        """
+        try:
+            num = int(task_id.split(" ")[-1]) - 1
+            if key in self.tasks[num]:
+                self.tasks[num][key] = new_value
+            else:
+                print(f"Invalid key: {key}")
+        except (IndexError, ValueError) as e:
+            print(f"Error modifying task: {e}")
