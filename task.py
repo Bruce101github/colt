@@ -29,3 +29,16 @@ class TaskManager:
             "Tag": tag,
             "Completed": completed
         })
+
+    def remove_task(self, task_id: str):
+        """
+        Removes a task from the task list.
+        
+        Args:
+            task_id (str): The identifier of the task to be removed.
+        """
+        try:
+            num = int(task_id.split(" ")[-1]) - 1
+            self.tasks.pop(num)
+        except (IndexError, ValueError) as e:
+            print(f"Error removing task: {e}")
