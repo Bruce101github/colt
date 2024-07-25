@@ -42,3 +42,21 @@ class TaskManager:
             self.tasks.pop(num)
         except (IndexError, ValueError) as e:
             print(f"Error removing task: {e}")
+
+    def view_tasks(self, filter: str = ""):
+        """
+        Lists tasks based on the specified filter.
+        
+        Args:
+            filter (str, optional): The filter for viewing tasks. Can be empty for active tasks or "Completed" for completed tasks. Defaults to an empty string.
+        """
+        temp_list = []
+        if filter == "":
+            temp_list = [task for task in self.tasks if not task["Completed"]]
+        elif filter == "Completed":
+            temp_list = [task for task in self.tasks if task["Completed"]]
+        
+        for task in temp_list:
+            for key, value in task.items():
+                print(f"{key}: {value}")
+            print("-" * 20)
