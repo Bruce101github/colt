@@ -1,7 +1,10 @@
-class TaskManager:
+from storage import Storage
+
+class TaskManager(Storage):
     """A class to manage tasks, including adding, removing, viewing, and modifying tasks."""
    
-    def __init__(self):
+    def __init__(self, file = 'task.json'):
+        super().__init__(file)
         self.tasks = []
 
     def add_task(self, 
@@ -29,6 +32,7 @@ class TaskManager:
             "Tag": tag,
             "Completed": completed
         })
+        super().save(self.tasks)
 
     def remove_task(self, task_id: str):
         """
