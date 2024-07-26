@@ -1,4 +1,6 @@
 from storage import Storage
+from utils import TerminalColor
+
 
 class TaskManager(Storage):
     """A class to manage tasks, including adding, removing, viewing, and modifying tasks."""
@@ -64,9 +66,9 @@ class TaskManager(Storage):
             temp_list = [task for task in self.tasks if task["Completed"]]
         
         for task in temp_list:
-            for key, value in task.items():
-                print(f"{key}: {value}")
-            print("-" * 20)
+            print("-" * 30)
+            print(f"{TerminalColor.RED}\033[1m{task["Task ID"]}{TerminalColor.RESET}: {TerminalColor.BRIGHT_WHITE}{task["Message"]}\n{TerminalColor.BRIGHT_BLACK}{task["Due"]}{TerminalColor.RESET}\t{TerminalColor.BRIGHT_CYAN}{task["Tag"]}{TerminalColor.RESET}")
+        print("-" * 30)
 
     def modify_task(self, task_id: str, key: str, new_value: any):
         """
