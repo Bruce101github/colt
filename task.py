@@ -6,6 +6,8 @@ class TaskManager(Storage):
     def __init__(self, file = 'task.json'):
         super().__init__(file)
         self.tasks = []
+        if self.path.exists():
+            self.tasks = super().load()
 
     def add_task(self, 
                  message: str, 
@@ -44,6 +46,7 @@ class TaskManager(Storage):
         try:
             num = int(task_id.split(" ")[-1]) - 1
             self.tasks.pop(num)
+            super().save(self.tasks)
         except (IndexError, ValueError) as e:
             print(f"Error removing task: {e}")
 
@@ -78,6 +81,7 @@ class TaskManager(Storage):
             num = int(task_id.split(" ")[-1]) - 1
             if key in self.tasks[num]:
                 self.tasks[num][key] = new_value
+                super().save(self.tasks)
             else:
                 print(f"Invalid key: {key}")
         except (IndexError, ValueError) as e:

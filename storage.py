@@ -26,14 +26,14 @@ class Storage:
         contents = json.dumps(tasks)
         self.path.write_text(contents)
 
-    def load(self, tasks: list):
+    def load(self):
         """Code to load tasks from a file"""
         try:
             contents = self.path.read_text()
         except FileNotFoundError:
             print(f"Failed to load storage.{self.file} does not exist")
         else:
-            tasks = json.loads(contents)
+            return json.loads(contents)
 
     # def update(self, tasks: list):
     #     """Code to update a specific task""

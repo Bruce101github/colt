@@ -27,7 +27,7 @@ def main():
         elif "task update" in command:
             message = command.split(" ", 4)
             task_id = f"{message[2]} {message[3]}"
-            key = task_id.title()
+            key = "Message"
             new_value = message[4].strip()
             task_manager.modify_task(task_id, key, new_value)
             print(f"{key} has been successfully modified.")
