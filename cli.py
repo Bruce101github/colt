@@ -7,10 +7,30 @@ def main():
     while True:
         command = input("Enter a command: ")
         if "task add" in command:
-            message = command.split("task add", 1)
-            todo = str(message[-1].strip())
-            task_manager.add_task(message=todo)
-            print("Task successfully created.")
+            if "--" in command:
+                first_split = command.split("task add", 1)
+                second_split = first_split[1].split("--")
+                note = second_split.pop(0).strip()
+                task_manager.add_task(message = note)
+                task_id = task_manager.tasks[-1]["Task ID"]
+                for com in second_split:
+                    if "due" in com:
+                        due = com.split("due")
+                        due = due[1].strip()
+                        task_manager.modify_task(task_id, "Due", due)
+                    if "tag" in com:
+                        tag = com.split("tag ", 1)
+                        tag = tag[1].split(",")
+                        task_manager.modify_task(task_id, "Tag", tag)
+                    if "important" in com:
+                        yes = True
+                        task_manager.modify_task(task_id, "Important", yes)
+                print("Task successfully created.")                
+            else:
+                message = command.split("task add", 1)
+                todo = str(message[-1].strip())
+                task_manager.add_task(message=todo)
+                print("Task successfully created.")
 
         elif "task list completed"  in command:
             task_manager.view_tasks(filter = "Completed")
@@ -23,6 +43,12 @@ def main():
             task_id = str(message[-1].strip())
             task_manager.remove_task(task_id)
             print(f"{task_id.title()} has been been deleted")
+        elif command == "task purge":
+            confirm = input("Are you sure you want do delete all task? Yes/No? ")
+            if confirm.lower() == "yes":
+                task_manager.tasks = []
+                task_manager.save(task_manager.tasks)
+                print("Purge was successful")
 
         elif "task update" in command:
             message = command.split(" ", 4)

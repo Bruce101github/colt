@@ -64,23 +64,27 @@ class TaskManager(Storage):
             temp_list = [task for task in self.tasks if not task["Completed"]]
         elif filter == "Completed":
             temp_list = [task for task in self.tasks if task["Completed"]]
-        
-        for task in temp_list:
-            date = task["Due"] 
-            tags = task["Tag"]
-            important = task["Important"]
-            output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {TerminalColor.BRIGHT_WHITE}{task["Message"]}{TerminalColor.RESET}"
+        if temp_list == []:
+            print("No tasks available")
+        else:
+            for task in temp_list:
+                date = task["Due"] 
+                tags = task["Tag"]
+                important = task["Important"]
+                output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {TerminalColor.BRIGHT_WHITE}{task["Message"]}{TerminalColor.RESET}"
 
+                print("-" * 30)
+                if important:
+                    output += f"{TerminalColor.YELLOW}!!!{TerminalColor.RESET}"
+                if date != "not specified":
+                    output += f"\n{TerminalColor.BRIGHT_BLACK}{date}  "
+                if tags != None:
+                    if date == "not specified":
+                        output += f"\n"
+                    for tag in tags:
+                        output += f"{TerminalColor.BRIGHT_CYAN}#{tag}{TerminalColor.RESET} "
+                print(output)
             print("-" * 30)
-            if important:
-                output += f"{TerminalColor.YELLOW}!!!{TerminalColor.RESET}"
-            if date != "not specified":
-                output += f"\n{TerminalColor.BRIGHT_BLACK}{date}"
-            if tags != None:
-                for tag in tags:
-                    output += f"  {tag}"
-            print(output)
-        print("-" * 30)
 
     def modify_task(self, task_id: str, key: str, new_value: any):
         """
