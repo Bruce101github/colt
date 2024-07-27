@@ -104,3 +104,29 @@ class TaskManager(Storage):
                 print(f"Invalid key: {key}")
         except (IndexError, ValueError) as e:
             print(f"Error modifying task: {e}")
+
+    def search_task(self, keyword: str):
+
+        found = [task for task in self.tasks if keyword in task["Message"]]
+        for task in found:
+            task["Message"] = task["Message"].replace(keyword, f"{TerminalColor.GREEN}{keyword}{TerminalColor.RESET}")
+            date = task["Due"] 
+            tags = task["Tag"]
+            important = task["Important"]
+            output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {task["Message"]}{TerminalColor.RESET}"
+
+            print("-" * 30)
+            if important:
+                output += f"{TerminalColor.YELLOW}!!!{TerminalColor.RESET}"
+            if date != "not specified":
+                output += f"\n{TerminalColor.BRIGHT_BLACK}{date}  "
+            if tags != None:
+                if date == "not specified":
+                    output += f"\n"
+                for tag in tags:
+                    output += f"{TerminalColor.BRIGHT_CYAN}#{tag}{TerminalColor.RESET} "
+            print(output)
+        print("-" * 30)
+
+
+

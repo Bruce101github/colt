@@ -65,6 +65,12 @@ def main():
             new_value = True
             task_manager.modify_task(task_id, key, new_value)
         
+        elif "task search" in command:
+            prompt = command.split("task search", 1)
+            message = prompt[-1].strip()
+            task_manager.search_task(keyword = message)
+
+
         elif command == "exit":
             break
 
