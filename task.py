@@ -105,29 +105,99 @@ class TaskManager(Storage):
         except (IndexError, ValueError) as e:
             print(f"Error modifying task: {e}")
 
-    def search_task(self, keyword: str):
+    def search_task(self, keyword: any, key: str = "Message"):
         temp_list = self.tasks[:]
-        found = [task for task in temp_list if keyword in task["Message"]]
-        for task in found:
-            task["Message"] = task["Message"].replace(keyword, f"{TerminalColor.BRIGHT_GREEN}{keyword}{TerminalColor.RESET}")
-            date = task["Due"] 
-            tags = task["Tag"]
-            important = task["Important"]
-            output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {TerminalColor.BRIGHT_WHITE}{task["Message"]}{TerminalColor.RESET}"
+        if key == "Important":
+            found = [task for task in temp_list if task[key] is True]
+            result = len(found)
+            
+            print(f"\nFound {TerminalColor.BRIGHT_GREEN}{result}{TerminalColor.RESET} matching results.")
 
-            print("-" * 30)
-            if important:
-                output += f"{TerminalColor.YELLOW}!!!{TerminalColor.RESET}"
-            if date != "not specified":
-                output += f"\n{TerminalColor.BRIGHT_BLACK}{date}  "
-            if tags != None:
-                if date == "not specified":
-                    output += f"\n"
-                for tag in tags:
-                    output += f"{TerminalColor.BRIGHT_CYAN}#{tag}{TerminalColor.RESET} "
-            print(output)
-            task["Message"] = task["Message"].replace(keyword, f"{TerminalColor.BRIGHT_WHITE}{keyword}{TerminalColor.RESET}")
-        print("-" * 30)
+            for task in found:
+                date = task["Due"] 
+                tags = task["Tag"]
+                important = task["Important"]
+                output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {TerminalColor.BRIGHT_WHITE}{task["Message"]}{TerminalColor.RESET}"
+        
+                #print(f"\nFound {TerminalColor.BRIGHT_GREEN}{result}{TerminalColor.RESET} matching results.")
+                print("-" * 30)
+                if important:
+                    output += f"{TerminalColor.YELLOW}!!!{TerminalColor.RESET}"
+                if date != "not specified":
+                    output += f"\n{TerminalColor.BRIGHT_BLACK}{date}  "
+                if tags != None:
+                    if date == "not specified":
+                        output += f"\n"
+                    for tag in tags:
+                        output += f"{TerminalColor.BRIGHT_CYAN}#{tag}{TerminalColor.RESET} "
+                print(output)
+            print("-" * 30 + "\n")
+
+        elif key == "Tag":
+            found = []
+            for task in temp_list:
+                check = True
+                for i in keyword:
+                    if i not in task["Tag"]:
+                        check = False
+                if check == True:
+                    found.append(task)
+            result = len(found)
+            
+            print(f"\nFound {TerminalColor.BRIGHT_GREEN}{result}{TerminalColor.RESET} matching results.")
+
+            for task in found:
+                date = task["Due"] 
+                tags = task["Tag"]
+                important = task["Important"]
+                output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {TerminalColor.BRIGHT_WHITE}{task["Message"]}{TerminalColor.RESET}"
+        
+                #print(f"\nFound {TerminalColor.BRIGHT_GREEN}{result}{TerminalColor.RESET} matching results.")
+                print("-" * 30)
+                if important:
+                    output += f"{TerminalColor.YELLOW}!!!{TerminalColor.RESET}"
+                if date != "not specified":
+                    output += f"\n{TerminalColor.BRIGHT_BLACK}{date}  "
+                if tags != None:
+                    if date == "not specified":
+                        output += f"\n"
+                    for tag in tags:
+                        output += f"{TerminalColor.BRIGHT_CYAN}#{tag}{TerminalColor.RESET} "
+                print(output)
+            print("-" * 30 + "\n")
+
+
+
+
+        else:
+            found = [task for task in temp_list if keyword in task[key]]
+            result = len(found)
+            
+            print(f"\nFound {TerminalColor.BRIGHT_GREEN}{result}{TerminalColor.RESET} matching results.")
+
+            for task in found:
+                task[key] = task[key].replace(keyword, f"{TerminalColor.BRIGHT_GREEN}{keyword}{TerminalColor.RESET}")
+                date = task["Due"] 
+                tags = task["Tag"]
+                important = task["Important"]
+                output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {TerminalColor.BRIGHT_WHITE}{task["Message"]}{TerminalColor.RESET}"
+        
+                #print(f"\nFound {TerminalColor.BRIGHT_GREEN}{result}{TerminalColor.RESET} matching results.")
+                print("-" * 30)
+                if important:
+                    output += f"{TerminalColor.YELLOW}!!!{TerminalColor.RESET}"
+                if date != "not specified":
+                    output += f"\n{TerminalColor.BRIGHT_BLACK}{date}  "
+                if tags != None:
+                    if date == "not specified":
+                        output += f"\n"
+                    for tag in tags:
+                        output += f"{TerminalColor.BRIGHT_CYAN}#{tag}{TerminalColor.RESET} "
+                print(output)
+                task[key] = task[key].replace(keyword, f"{TerminalColor.BRIGHT_WHITE}{keyword}")
+            print("-" * 30 + "\n")
+
+
 
 
 

@@ -70,6 +70,25 @@ def main():
             message = prompt[-1].strip()
             task_manager.search_task(keyword = message)
 
+        elif "task filter" in command:
+            if "--" in command:
+                first_split = command.split("task filter", 1)
+                second_split = first_split[1].split("--")
+                second_split.pop(0).strip()
+                for com in second_split:
+                    if "due" in com:
+                        due = com.split("due")
+                        due = due[1].strip()
+                        task_manager.search_task(key = "Due", keyword = due)
+                    if "tag" in com:
+                        tag = com.split("tag ", 1)
+                        tag = tag[1].split(",")
+                        print(tag)
+                        task_manager.search_task(key = "Tag", keyword = tag)
+                    if "important" in com:
+                        yes = True
+                        task_manager.search_task(key = "Important", keyword = yes)
+
 
         elif command == "exit":
             break
