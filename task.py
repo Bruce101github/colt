@@ -106,14 +106,14 @@ class TaskManager(Storage):
             print(f"Error modifying task: {e}")
 
     def search_task(self, keyword: str):
-
-        found = [task for task in self.tasks if keyword in task["Message"]]
+        temp_list = self.tasks[:]
+        found = [task for task in temp_list if keyword in task["Message"]]
         for task in found:
-            task["Message"] = task["Message"].replace(keyword, f"{TerminalColor.GREEN}{keyword}{TerminalColor.RESET}")
+            task["Message"] = task["Message"].replace(keyword, f"{TerminalColor.BRIGHT_GREEN}{keyword}{TerminalColor.RESET}")
             date = task["Due"] 
             tags = task["Tag"]
             important = task["Important"]
-            output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {task["Message"]}{TerminalColor.RESET}"
+            output = f"{TerminalColor.RED}{TerminalColor.BOLD}{task["Task ID"]}{TerminalColor.RESET}: {TerminalColor.BRIGHT_WHITE}{task["Message"]}{TerminalColor.RESET}"
 
             print("-" * 30)
             if important:
@@ -126,6 +126,7 @@ class TaskManager(Storage):
                 for tag in tags:
                     output += f"{TerminalColor.BRIGHT_CYAN}#{tag}{TerminalColor.RESET} "
             print(output)
+            task["Message"] = task["Message"].replace(keyword, f"{TerminalColor.BRIGHT_WHITE}{keyword}{TerminalColor.RESET}")
         print("-" * 30)
 
 
